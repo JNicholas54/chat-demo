@@ -124,7 +124,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#000', // Text color for the button
     fontSize: 18, // Font size
-    fontWeight: 'bold',
+    fontWeight: '800',
+    textTransform: 'uppercase',
   },
 });
 

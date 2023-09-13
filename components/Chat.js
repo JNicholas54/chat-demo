@@ -72,7 +72,7 @@ const Chat = ({ route, navigation }) => {
       />
       {Platform.OS === 'android' ? (
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Use 'height' for Android
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Use 'padding' for iOS & 'height' for Android
         />
       ) : null}
     </View>
