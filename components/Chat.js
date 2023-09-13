@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,16 +6,32 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { Bubble, GiftedChat } from 'react-native-gifted-chat';
 
 const Chat = ({ route, navigation }) => {
   const { name, color } = route.params;
   //creating messages state
-  const [messages, setMessages] = useState();
+  const [messages, setMessages] = useState([]);
 
   const onSend = (newMessages) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, newMessages)
+    );
+  };
+
+  const renderBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: '#000',
+          },
+          left: {
+            backgroundColor: '#fff',
+          },
+        }}
+      />
     );
   };
 
@@ -24,7 +40,7 @@ const Chat = ({ route, navigation }) => {
       {
         _id: 1,
         text: 'Hello developer :D',
-        createAt: new Date(),
+        createdAt: new Date(),
         user: {
           _id: 2,
           name: 'React Native',
@@ -34,7 +50,7 @@ const Chat = ({ route, navigation }) => {
       {
         _id: 2,
         text: 'This is a system message',
-        createAt: new Date(),
+        createdAt: new Date(),
         system: true,
       },
     ]);
@@ -48,13 +64,14 @@ const Chat = ({ route, navigation }) => {
     <View style={[styles.container, { backgroundColor: color }]}>
       <GiftedChat
         messages={messages}
+        renderBubble={renderBubble}
         onSend={(messages) => onSend(messages)}
         user={{
           _id: 1,
         }}
       />
       {Platform.OS === 'android' ? (
-        <KeyboardAvoidingView behavior='height' />
+        <KeyboardAvoidingView behavior='padding' />
       ) : null}
     </View>
   );
