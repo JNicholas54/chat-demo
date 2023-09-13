@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  apppTitle: {
+  appTitle: {
     fontSize: 45,
     fontWeight: '600',
-    color: '#fff',
+    color: '#000',
   },
   textInput: {
     width: '88%',
