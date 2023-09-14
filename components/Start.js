@@ -1,14 +1,17 @@
 import { useState } from 'react';
+import { getAuth, signInAnonymously } from 'firebase/auth';
 import {
   ImageBackground,
   StyleSheet,
-  View,
   Text,
-  TouchableOpacity,
-  TextInput,
   KeyboardAvoidingView,
+  View,
+  TextInput,
+  TouchableOpacity,
   Platform,
+  Alert,
 } from 'react-native';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const image = require('../media/images/background-image.png');
 
@@ -20,8 +23,24 @@ const backgroundColors = {
 };
 
 const Start = ({ navigation }) => {
+  const auth = getAuth();
   const [name, setName] = useState('');
   const [color, setColor] = useState(backgroundColors.d);
+
+  const signInUser = () => {
+    signInAnonymously(auth)
+      .then((result) => {
+        navigation.navigate('Chat', {
+          userID: result.user.uid,
+          name: name,
+          color: color,
+        });
+        Alert.alert('Signed in Successfully!');
+      })
+      .catch((error) => {
+        Alert.alert('Something went wrong, please try again.');
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -54,12 +73,7 @@ const Start = ({ navigation }) => {
               onPress={() => setColor(backgroundColors.d)}
             ></TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              navigation.navigate('Chat', { name: name, color: color })
-            }
-          >
+          <TouchableOpacity style={styles.button} onPress={signInUser}>
             <Text style={styles.buttonText}>Start chatting</Text>
           </TouchableOpacity>
         </View>
