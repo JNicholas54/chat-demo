@@ -8,6 +8,8 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { async } from '@firebase/util';
 import {
   collection,
   addDoc,
@@ -47,6 +49,7 @@ const Chat = ({ route, navigation, db }) => {
             createdAt: new Date(doc.data().createdAt.toMillis()),
           });
         });
+        cacheMessages(newMessages);
         setMessages(newMessages);
       }
     );
@@ -55,6 +58,14 @@ const Chat = ({ route, navigation, db }) => {
       if (unsubMessages) unsubMessages();
     };
   }, []);
+
+  const cacheMessages = async (messageToCache) => {
+    try {
+      await AsyncStorage.setItem('messages', JSON.stringify(messageToCache));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   useEffect(() => {
     navigation.setOptions({ title: name });
