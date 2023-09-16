@@ -77,6 +77,9 @@ const Start = ({ navigation }) => {
             <Text style={styles.buttonText}>Start chatting</Text>
           </TouchableOpacity>
         </View>
+        {Platform.OS === 'ios' ? (
+          <KeyboardAvoidingView behavior='padding' />
+        ) : null}
       </ImageBackground>
     </View>
   );

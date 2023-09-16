@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { async } from '@firebase/util';
 import {
   collection,
   addDoc,
@@ -67,9 +66,9 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     };
   }, [isConnected]);
 
-  const cacheMessages = async (messageToCache) => {
+  const cacheMessages = async (messagesToCache) => {
     try {
-      await AsyncStorage.setItem('messages', JSON.stringify(messageToCache));
+      await AsyncStorage.setItem('messages', JSON.stringify(messagesToCache));
     } catch (error) {
       console.log(error.message);
     }
