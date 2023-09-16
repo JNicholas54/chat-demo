@@ -84,15 +84,17 @@ const Chat = ({ route, navigation, db, isConnected }) => {
   }, []);
 
   const renderBubble = (props) => {
+    const isUserOnline = isConnected;
+
     return (
       <Bubble
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#797EF6',
+            backgroundColor: isUserOnline ? '#1B998B' : '#D83B3B', // this changes the bubble color when offline.
           },
           left: {
-            backgroundColor: '#4ADEDE',
+            backgroundColor: isUserOnline ? '#eddea4' : '#bebbbb', // this changes the bubble color when offline.
           },
         }}
       />
@@ -103,7 +105,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     if (isConnected) {
       return <InputToolbar {...props} />;
     } else {
-      return null;
+      return null; // dont render the inputtoolbar when offline
     }
   };
 
