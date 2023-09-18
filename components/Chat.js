@@ -130,7 +130,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
           region={{
             latitude: currentMessage.location.latitude,
             longitude: currentMessage.location.longitude,
-            latitudeDelta: 0.0933,
+            latitudeDelta: 0.0922,
             longitudeDelta: 0.0431,
           }}
         />
@@ -146,12 +146,12 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
         onSend={(message) => addMessage(message)}
         renderActions={renderCustomActions}
         renderCustomView={renderCustomView}
-        renderBubble={renderBubble}
-        renderInputToolbar={renderInputToolbar}
         user={{
           _id: userID,
           name: name,
         }}
+        renderBubble={renderBubble}
+        renderInputToolbar={renderInputToolbar}
       />
       {Platform.OS === 'android' ? (
         <KeyboardAvoidingView

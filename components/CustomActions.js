@@ -43,12 +43,12 @@ const CustomActions = ({
   };
 
   const pickImage = async () => {
-    let permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (permission?.granted) {
+    if (permissions?.granted) {
       let result = await ImagePicker.launchImageLibraryAsync();
 
-      if (!permission.cancelled) {
+      if (!permissions.cancelled) {
         const imageURI = result.assets[0].uri;
         const uniqueRefString = generateReference(imageURI);
         const response = await fetch(imageURI);
@@ -64,12 +64,12 @@ const CustomActions = ({
   };
 
   const takePicture = async () => {
-    let permission = await ImagePicker.requestCameraPermissionsAsync();
+    let permissions = await ImagePicker.requestCameraPermissionsAsync();
 
-    if (permission?.granted) {
+    if (permissions?.granted) {
       let result = await ImagePicker.launchCameraAsync();
 
-      if (!permission.cancelled) {
+      if (!permissions.cancelled) {
         const imageURI = result.assets[0].uri;
         const uniqueRefString = generateReference(imageURI);
         const response = await fetch(imageURI);
@@ -85,9 +85,9 @@ const CustomActions = ({
   };
 
   const getLocation = async () => {
-    let permission = await Location.requestForegroundPermissionsAsync();
+    let permissions = await Location.requestForegroundPermissionsAsync();
 
-    if (permission?.granted) {
+    if (permissions?.granted) {
       const location = await Location.getCurrentPositionAsync({});
       if (location) {
         onSend({
