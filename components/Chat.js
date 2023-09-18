@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import CustomActions from './CustomActions';
 import {
   StyleSheet,
   View,
@@ -8,6 +9,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
+import { MapView } from 'react-native-maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   collection,
@@ -109,6 +111,33 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     }
   };
 
+  const renderCustomActions = (props) => {
+    return <CustomActions {...props} />;
+  };
+
+  const renderCustomView = (props) => {
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
+        <MapView
+          style={{
+            width: 150,
+            height: 100,
+            borderRadius: 13,
+            margin: 3,
+          }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0933,
+            longitudeDelta: 0.0431,
+          }}
+        />
+      );
+    }
+    return null;
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: color }]}>
       <GiftedChat
@@ -118,6 +147,8 @@ const Chat = ({ route, navigation, db, isConnected }) => {
           _id: userID,
           name: name,
         }}
+        renderActions={renderCustionActions}
+        renderCustomView={renderCustomView}
         renderBubble={renderBubble}
         renderInputToolbar={renderInputToolbar}
       />
