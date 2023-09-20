@@ -42,24 +42,38 @@ const CustomActions = ({
     );
   };
 
+  const sendAndUploadImage = async (imageURI) => {
+    const uniqueRefString = generateReference(imageURI);
+    const response = await fetch(imageURI);
+    const blob = await response.blob();
+    const newUploadRef = ref(storage, uniqueRefString);
+    uploadBytes(newUploadRef, blob).then(async (snapshot) => {
+      console.log('File has been uploaded');
+      const imageURL = await getDownloadURL(snapshot.ref);
+      onSend({ image: imageURL });
+    });
+  };
+
   const pickImage = async () => {
     let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissions?.granted) {
       let result = await ImagePicker.launchImageLibraryAsync();
 
-      if (!permissions.cancelled) {
-        const imageURI = result.assets[0].uri;
-        const uniqueRefString = generateReference(imageURI);
-        const response = await fetch(imageURI);
-        const blob = await response.blob();
-        const newUploadRef = ref(storage, uniqueRefString);
-        uploadBytes(newUploadRef, blob).then(async (snapshot) => {
-          console.log('File has been uploaded');
-          const imageURL = await getDownloadURL(snapshot.ref);
-          onSend({ image: imageURL });
-        });
-      }
+      //   if (!permissions.cancelled) {
+      //     const imageURI = result.assets[0].uri;
+      //     const uniqueRefString = generateReference(imageURI);
+      //     const response = await fetch(imageURI);
+      //     const blob = await response.blob();
+      //     const newUploadRef = ref(storage, uniqueRefString);
+      //     uploadBytes(newUploadRef, blob).then(async (snapshot) => {
+      //       console.log('File has been uploaded');
+      //       const imageURL = await getDownloadURL(snapshot.ref);
+      //       onSend({ image: imageURL });
+      //     });
+      //   }
+      if (!permissions.cancelled)
+        await sendAndUploadImage(result.assets[0].uri);
     } else Alert.alert("Permissions haven't been granted.");
   };
 
@@ -69,18 +83,20 @@ const CustomActions = ({
     if (permissions?.granted) {
       let result = await ImagePicker.launchCameraAsync();
 
-      if (!permissions.cancelled) {
-        const imageURI = result.assets[0].uri;
-        const uniqueRefString = generateReference(imageURI);
-        const response = await fetch(imageURI);
-        const blob = await response.blob();
-        const newUploadRef = ref(storage, uniqueRefString);
-        uploadBytes(newUploadRef, blob).then(async (snapshot) => {
-          console.log('File has been uploaded');
-          const imageURL = await getDownloadURL(snapshot.ref);
-          onSend({ image: imageURL });
-        });
-      }
+      //   if (!permissions.cancelled) {
+      //     const imageURI = result.assets[0].uri;
+      //     const uniqueRefString = generateReference(imageURI);
+      //     const response = await fetch(imageURI);
+      //     const blob = await response.blob();
+      //     const newUploadRef = ref(storage, uniqueRefString);
+      //     uploadBytes(newUploadRef, blob).then(async (snapshot) => {
+      //       console.log('File has been uploaded');
+      //       const imageURL = await getDownloadURL(snapshot.ref);
+      //       onSend({ image: imageURL });
+      //     });
+      //   }
+      if (!permissions.cancelled)
+        await sendAndUploadImage(result.assets[0].uri);
     } else Alert.alert("Permissions haven't been granted.");
   };
 
@@ -107,7 +123,14 @@ const CustomActions = ({
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onActionPress}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onActionPress}
+      accessible={true}
+      accessibilityLabel='More options'
+      accessibilityHint="Let's you choose to send an image or your geolocation."
+      accessibilityRole='button'
+    >
       <View style={[styles.wrapper, wrapperStyle]}>
         <Text style={[styles.iconText, iconTextStyle]}></Text>
       </View>
