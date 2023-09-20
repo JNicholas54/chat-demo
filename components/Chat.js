@@ -3,7 +3,6 @@ import CustomActions from './CustomActions';
 import {
   StyleSheet,
   View,
-  Text,
   Platform,
   Alert,
   KeyboardAvoidingView,
@@ -15,16 +14,14 @@ import {
   collection,
   addDoc,
   onSnapshot,
-  getDocs,
   query,
   orderBy,
 } from 'firebase/firestore';
 
 const Chat = ({ route, navigation, db, isConnected, storage }) => {
   const { name, color, userID } = route.params;
-
-  //created messages state
   const [messages, setMessages] = useState([]);
+  //created messages state
 
   //called the onSend() function addMessage()
   const addMessage = async (newMessages) => {
@@ -112,7 +109,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
   };
 
   const renderCustomActions = (props) => {
-    return <CustomActions storage={storage} userID={userID} {...props} />;
+    return <CustomActions storage={storage} {...props} />;
   };
 
   const renderCustomView = (props) => {

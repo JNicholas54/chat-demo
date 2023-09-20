@@ -26,6 +26,8 @@ const CustomActions = ({
         options,
         cancelButtonIndex,
       },
+
+      // selects the action function based on the index selected from the `options`
       async (buttonIndex) => {
         switch (buttonIndex) {
           case 0:
@@ -42,6 +44,7 @@ const CustomActions = ({
     );
   };
 
+  // uploads the image to firebase storage, then uses the img URL and adds to messages
   const sendAndUploadImage = async (imageURI) => {
     const uniqueRefString = generateReference(imageURI);
     const response = await fetch(imageURI);
@@ -54,56 +57,35 @@ const CustomActions = ({
     });
   };
 
+  // gets the users media permissions and if granted, opens the library and passes the
+  // img URI to `sendAndUploadImage`
   const pickImage = async () => {
-    let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    let permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (permissions?.granted) {
+    if (permission?.granted) {
       let result = await ImagePicker.launchImageLibraryAsync();
 
-      //   if (!permissions.cancelled) {
-      //     const imageURI = result.assets[0].uri;
-      //     const uniqueRefString = generateReference(imageURI);
-      //     const response = await fetch(imageURI);
-      //     const blob = await response.blob();
-      //     const newUploadRef = ref(storage, uniqueRefString);
-      //     uploadBytes(newUploadRef, blob).then(async (snapshot) => {
-      //       console.log('File has been uploaded');
-      //       const imageURL = await getDownloadURL(snapshot.ref);
-      //       onSend({ image: imageURL });
-      //     });
-      //   }
-      if (!permissions.cancelled)
-        await sendAndUploadImage(result.assets[0].uri);
+      if (!result.canceled) await sendAndUploadImage(result.assets[0].uri);
     } else Alert.alert("Permissions haven't been granted.");
   };
 
+  // gets the users camera permissions and if granted, opens the camera and passes the
+  // img URI to `sendAndUploadImage`
   const takePicture = async () => {
-    let permissions = await ImagePicker.requestCameraPermissionsAsync();
+    let permission = await ImagePicker.requestCameraPermissionsAsync();
 
-    if (permissions?.granted) {
+    if (permission?.granted) {
       let result = await ImagePicker.launchCameraAsync();
 
-      //   if (!permissions.cancelled) {
-      //     const imageURI = result.assets[0].uri;
-      //     const uniqueRefString = generateReference(imageURI);
-      //     const response = await fetch(imageURI);
-      //     const blob = await response.blob();
-      //     const newUploadRef = ref(storage, uniqueRefString);
-      //     uploadBytes(newUploadRef, blob).then(async (snapshot) => {
-      //       console.log('File has been uploaded');
-      //       const imageURL = await getDownloadURL(snapshot.ref);
-      //       onSend({ image: imageURL });
-      //     });
-      //   }
-      if (!permissions.cancelled)
-        await sendAndUploadImage(result.assets[0].uri);
+      if (!result.canceled) await sendAndUploadImage(result.assets[0].uri);
     } else Alert.alert("Permissions haven't been granted.");
   };
 
+  // gets the users location permissions and if granted, gets the users current location and sends it
   const getLocation = async () => {
-    let permissions = await Location.requestForegroundPermissionsAsync();
+    let permission = await Location.requestForegroundPermissionsAsync();
 
-    if (permissions?.granted) {
+    if (permission?.granted) {
       const location = await Location.getCurrentPositionAsync({});
       if (location) {
         onSend({
@@ -116,6 +98,7 @@ const CustomActions = ({
     } else Alert.alert("Permissions haven't been granted.");
   };
 
+  // generates a unique string based on the time, img name and userID
   const generateReference = (uri) => {
     const timeStamp = new Date().getTime();
     const imageName = uri.split('/')[uri.split('/').length - 1];
