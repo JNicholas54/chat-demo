@@ -18,6 +18,7 @@ import {
   disableNetwork,
   enableNetwork,
 } from 'firebase/firestore';
+//initializing storage handler which passes
 import { getStorage } from 'firebase/storage';
 //importing useNetInfo for keeping track of networks connectivity and update in real time
 import { useNetInfo } from '@react-native-community/netinfo';
