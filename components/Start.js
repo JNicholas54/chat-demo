@@ -11,7 +11,6 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const image = require('../media/images/background-image.png');
 
@@ -45,7 +44,7 @@ const Start = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ImageBackground source={image} resizeMode='cover' style={styles.image}>
-        <Text style={styles.appTitle}>App title</Text>
+        <Text style={styles.appTitle}>Chat App</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.textInput}
